@@ -48,10 +48,7 @@
   <div class="wrap">
     <div class="sec-head"><span class="num">01</span><h2>About</h2></div>
     <div class="about">
-      <div>
-        <p>I'm a master's student in Information Science &amp; Technology at The University of Osaka, where I work in the Integrated Media Environment lab with Prof. Uranishi as a MEXT Scholar. My research asks how a mobile robot can adjust its own planner on the fly when people and obstacles keep moving.</p>
-        <p>I came to robotics through aerospace engineering at Sharif University of Technology, where my bachelor's thesis put real-time visual SLAM on a physical robot and won the Best Bachelor's Thesis Award. Since then I've worked across security engineering and data science, most recently building a ranking model that went into production at C Channel in Tokyo.</p>
-      </div>
+      <p>I'm a master's student at The University of Osaka, working in the Integrated Media Environment lab with Prof. Uranishi on how a mobile robot can retune its own planner while people and obstacles keep moving. I came to robotics through aerospace engineering at Sharif University of Technology, and I've since worked in security engineering and data science, most recently shipping a ranking model at C Channel in Tokyo.</p>
       <ul class="facts">
         <li><span>Now</span>M.S., The University of Osaka (expected Sep 2027)</li>
         <li><span>Focus</span>Deep RL · robot navigation · applied ML</li>
@@ -169,7 +166,7 @@
           </div>
         </div>
         <div>
-          <h3 class="jr-h">What I learned <span class="jr-count" id="jr-count"></span></h3>
+          <h3 class="jr-h">What I learned</h3>
           <div class="jr-skills" id="jr-skills"></div>
           <p class="jr-legend"><span class="jr-chip new">Learning now</span><span class="jr-chip">Already in the toolkit</span></p>
         </div>
@@ -183,7 +180,10 @@
 </main>
 
 <footer>
-  <div class="wrap">© <span id="y">2026</span> Zahra Jooyandeh</div>
+  <div class="wrap">
+    <span>© <span id="y">2026</span> Zahra Jooyandeh</span>
+    <span class="foot-links"><a href="mailto:zahrajooyandeh2000@outlook.com">Email</a><a href="https://github.com/Hasti-jyndh">GitHub</a><a href="#top">Back to top ↑</a></span>
+  </div>
 </footer>
 <dialog id="cite" aria-labelledby="cite-h">
   <h3 id="cite-h">Cite this work</h3>
@@ -268,7 +268,7 @@ document.getElementById('y').textContent = new Date().getFullYear();
 
   var $ = function (id) { return document.getElementById(id); };
   var track = $('jr-track'), head = $('jr-head'), range = $('jr-range'), dateEl = $('jr-date'),
-      doing = $('jr-doing'), skills = $('jr-skills'), count = $('jr-count'), playBtn = null;
+      doing = $('jr-doing'), skills = $('jr-skills'), count = null;
   if (!track) return;
   function pct(t) { return (t - A) / (B - A) * 100; }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -332,9 +332,9 @@ document.getElementById('y').textContent = new Date().getFullYear();
       c.appendChild(el('p', null, p.did));
       doing.appendChild(c);
     });
-    if (latest) {
+    if (latest && fresh.indexOf(latest) > -1) {
       var c = el('div', 'jr-item mile');
-      c.appendChild(el('div', 'jr-meta', 'Latest milestone · ' + latest.year));
+      c.appendChild(el('div', 'jr-meta', 'Milestone · ' + latest.year));
       c.appendChild(el('strong', null, latest.title));
       c.appendChild(el('p', null, latest.did));
       doing.appendChild(c);
@@ -345,10 +345,10 @@ document.getElementById('y').textContent = new Date().getFullYear();
     PERIODS.forEach(function (p) { if (t >= p.start) events.push({ at: p.start, list: p.learned, now: t <= endOf(p) }); });
     passed.forEach(function (m) { events.push({ at: m.at, list: m.learned, now: fresh.indexOf(m) > -1 }); });
     events.sort(function (a, b) { return a.at - b.at; });
-    skills.textContent = ''; var n = 0, seen = {};
+    skills.textContent = ''; var seen = {};
     events.forEach(function (ev) {
       ev.list.forEach(function (s) {
-        if (seen[s]) return; seen[s] = 1; n++;
+        if (seen[s]) return; seen[s] = 1;
         skills.appendChild(el('span', 'jr-chip' + (ev.now ? ' new' : ''), s));
       });
     });
