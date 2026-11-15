@@ -79,7 +79,7 @@
       <li class="pub">
         <div class="pub-num">01</div>
 <a class="pub-thumb" href="https://arxiv.org/abs/2609.22276">
-  <img src="d3dwa.png" alt="Overview of the D3DWA">
+  <img src="teaser_new.png" alt="Overview of the D3DWA">
 </a>
         <div>
           <a class="pub-topic" href="https://arxiv.org/abs/2609.22276">Deep RL × local planning</a>
@@ -136,7 +136,7 @@
 <section id="journey">
   <div class="wrap">
     <div class="sec-head"><span class="num">04</span><h2>Journey</h2></div>
-    <p class="jr-intro">Drag the bar through time, or press play, to see what I was doing in each period and what I learned along the way.</p>
+    <p class="jr-intro">Drag the bar through time to see what I was doing in each period and what I learned along the way.</p>
 
     <div class="jr" id="jr">
       <div class="jr-top">
@@ -144,7 +144,6 @@
           <div class="jr-kicker">You are looking at</div>
           <div class="jr-date" id="jr-date">Sep 2018</div>
         </div>
-        <button class="chip" type="button" id="jr-play">Play ▶</button>
       </div>
 
       <div class="jr-chart">
@@ -285,7 +284,7 @@ document.getElementById('y').textContent = new Date().getFullYear();
 
   var $ = function (id) { return document.getElementById(id); };
   var track = $('jr-track'), head = $('jr-head'), range = $('jr-range'), dateEl = $('jr-date'),
-      doing = $('jr-doing'), skills = $('jr-skills'), count = $('jr-count'), playBtn = $('jr-play');
+      doing = $('jr-doing'), skills = $('jr-skills'), count = $('jr-count'), playBtn = null;
   if (!track) return;
   function pct(t) { return (t - A) / (B - A) * 100; }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -371,50 +370,27 @@ document.getElementById('y').textContent = new Date().getFullYear();
     });
   }
 
-  // Playback
-  var playing = false, raf = 0, prev = 0, DURATION = 24000;
-  function setBtn() { playBtn.textContent = playing ? 'Pause ❚❚' : (t >= NOW - 1e-3 ? 'Replay ↺' : 'Play ▶'); }
-  function frame(ts) {
-    if (!playing) return;
-    if (prev) t += (ts - prev) / DURATION * (NOW - START);
-    prev = ts;
-    if (t >= NOW) { t = NOW; playing = false; }
-    render(); setBtn();
-    if (playing) raf = requestAnimationFrame(frame);
-  }
-  function play() { if (t >= NOW - 1e-3) t = START; playing = true; prev = 0; setBtn(); raf = requestAnimationFrame(frame); }
-  function pause() { playing = false; cancelAnimationFrame(raf); setBtn(); }
-  playBtn.addEventListener('click', function () { playing ? pause() : play(); });
-
   // Scrubbing
   function seek(e) {
     var r = track.getBoundingClientRect();
     t = Math.max(START, Math.min(NOW, A + (e.clientX - r.left) / r.width * (B - A)));
-    render(); setBtn();
+    render();
   }
   var dragging = false;
-  track.addEventListener('pointerdown', function (e) { pause(); dragging = true; track.setPointerCapture(e.pointerId); seek(e); });
+  track.addEventListener('pointerdown', function (e) { dragging = true; track.setPointerCapture(e.pointerId); seek(e); });
   track.addEventListener('pointermove', function (e) { if (dragging) seek(e); });
   track.addEventListener('pointerup', function () { dragging = false; });
   track.addEventListener('pointercancel', function () { dragging = false; });
-  range.addEventListener('input', function () { pause(); t = parseFloat(range.value); render(); setBtn(); });
+  range.addEventListener('input', function () { t = parseFloat(range.value); render(); });
   range.addEventListener('keydown', function (e) {
     var step = e.key === 'ArrowRight' || e.key === 'ArrowUp' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowDown' ? -1 : 0;
     if (!step) return;
-    e.preventDefault(); pause();
-    t = Math.max(START, Math.min(NOW, t + step / 12)); render(); setBtn();
+    e.preventDefault();
+    t = Math.max(START, Math.min(NOW, t + step / 12)); render();
   });
 
-  // Start: play once when scrolled into view, unless the visitor prefers reduced motion
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce || !('IntersectionObserver' in window)) { t = NOW; render(); setBtn(); }
-  else {
-    render(); setBtn();
-    var io = new IntersectionObserver(function (en) {
-      if (en[0].isIntersecting) { io.disconnect(); play(); }
-    }, { threshold: 0.5 });
-    io.observe(track);
-  }
+  // Start at today; the visitor moves the bar by hand
+  t = NOW; render();
 })();
 </script>
 </body>
