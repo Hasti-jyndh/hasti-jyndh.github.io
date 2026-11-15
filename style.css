@@ -244,7 +244,6 @@ dialog .pub-links { margin-top: 0; }
 .jr-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
 .jr-kicker { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .jr-date { font-family: var(--serif); font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.05; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-#jr-play { min-width: 104px; }
 
 .jr-chart { position: relative; display: grid; grid-template-columns: 92px 1fr; gap: 0 14px; border-radius: 8px; }
 .jr-labels { display: grid; grid-auto-rows: 30px; row-gap: 8px; }
@@ -270,6 +269,7 @@ dialog .pub-links { margin-top: 0; }
 .jr-today { position: absolute; top: 0; bottom: 22px; width: 0; border-left: 1px dashed var(--muted); pointer-events: none; }
 .jr-today span { position: absolute; top: -16px; left: 0; transform: translateX(-50%); font-family: var(--mono); font-size: .62rem; color: var(--muted); }
 .jr-head { position: absolute; top: -6px; bottom: 22px; width: 2px; margin-left: -1px; background: var(--ink); pointer-events: none; z-index: 2; }
+.jr-track:active { cursor: grabbing; }
 .jr-head::before { content: ""; position: absolute; top: -8px; left: -7px; width: 16px; height: 16px; border-radius: 50%; background: var(--ink); border: 3px solid var(--surface); box-shadow: var(--shadow); }
 .jr-head::after { content: ""; position: absolute; bottom: -5px; left: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--ink); }
 
